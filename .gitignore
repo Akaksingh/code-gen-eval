@@ -1,0 +1,18 @@
+# Secrets
+.env
+
+# Virtualenv
+.venv/
+venv/
+
+# Run logs (regenerated; don't commit)
+runs/*.jsonl
+
+# Python
+__pycache__/
+*.pyc
+.ipynb_checkpoints/
+
+# Big benchmarks you download (keep the loader + a README, not the data)
+data/humaneval/problems.jsonl
+data/mbpp/

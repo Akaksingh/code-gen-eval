@@ -1,0 +1,12 @@
+# Pinned for reproducibility. A fresh clone + `pip install -r requirements.txt` must
+# run the eval. Versions below are known-good as of 2026-10; bump deliberately.
+
+anthropic==0.40.0      # Claude provider (only imported if you use --provider anthropic)
+PyYAML==6.0.2          # config.yaml
+python-dotenv==1.0.1   # loads .env
+requests==2.32.3       # Ollama HTTP client
+tabulate==0.9.0        # pretty tables in report.py
+
+# For the error-analysis notebook (optional; not needed to run the harness):
+# jupyter==1.1.1
+# pandas==2.2.3

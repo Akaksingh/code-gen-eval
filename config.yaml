@@ -1,0 +1,47 @@
+# code-gen-eval configuration.
+# Never hardcode a model string in logic — change it here or override on the CLI.
+
+# Which provider the harness uses by default. One of: mock | anthropic | ollama.
+# `mock` needs no API key and no network — use it to prove the harness is correct.
+provider: mock
+
+providers:
+  mock:
+    # The mock doesn't call anything. It returns a correct reference solution for a
+    # fraction of problems and a plausible-but-buggy one otherwise, so you can watch
+    # the whole loop (and pass@1) work end to end with no key.
+    model: mock-v1
+    correct_fraction: 0.7
+    seed: 7
+
+  anthropic:
+    model: claude-haiku-5-5   # cheap + fast; bump to claude-sonnet-5-5 for the grid
+    temperature: 0.0
+    max_tokens: 2048          # code needs more room than SQL
+
+  ollama:
+    model: qwen2.5-coder      # ollama pull qwen2.5-coder
+    host: http://localhost:11434
+    temperature: 0.0
+    num_predict: 2048
+
+# Prompt variant to use by default. Defined in harness/prompts.py.
+# One of: zero_shot | cot | few_shot.
+prompt: zero_shot
+
+# Datasets. A dataset directory contains problems.jsonl (see harness/datasets.py).
+datasets:
+  golden:
+    dir: data/golden
+  humaneval:
+    dir: data/humaneval
+
+# Sandbox guardrails for running untrusted, model-generated code. This is the part
+# that makes the project a real engineering story — not an afterthought.
+sandbox:
+  timeout_s: 10          # wall-clock limit per candidate (kills infinite loops)
+  max_output_bytes: 65536 # cap captured stdout/stderr so a noisy program can't OOM us
+  # The runner executes each candidate in a fresh subprocess with -I (isolated mode),
+  # in a throwaway temp dir, with network/env scrubbed. See harness/sandbox.py.
+
+runs_dir: runs
